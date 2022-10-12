@@ -1,1 +1,3 @@
-+H,ª³­6Õ}IÄòìVéÈuÙ%dêNœ½4ˆnÉ•×¥©L=ÅAØ€ÊÊ·RvÛz÷°ä<ÙÎH<7`Þ.¶–;´&Ô
+DROP DATABASE IF EXISTS tech_blog_db;
+
+CREATE DATABASE tech_blog_db;
