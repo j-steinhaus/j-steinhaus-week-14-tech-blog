@@ -1,9 +1,9 @@
 // variables 
+const express = require('express')
 const path = require('path');
-const express = require('express');
-const routes = require('./controllers');
-const sequelize = require('./config/connection');
-const helpers = require('./utils/helpers');
+const routes = require('./controller');
+const sequelize = require('./config/config.js');
+const helpers = require('./utils/helpers.js');
 const exphbs = require('express-handlebars');
 const hbs = exphbs.create({
     helpers
