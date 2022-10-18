@@ -1,45 +1,47 @@
-const path = require("path");
-const express = require("express");
-const session = require("express-session");
-const exphbs = require("express-handlebars");
-const helpers = require("./utils/helpers");
+// variables 
+const path = require('path');
+const express = require('express');
+const routes = require('./controllers');
+const sequelize = require('./config/connection');
+const helpers = require('./utils/helpers');
+const exphbs = require('express-handlebars');
+const hbs = exphbs.create({
+    helpers
+});
+const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
+// time to check every 10 mins and expire after 30 mins 
+const sess = {
+    secret: process.env.DB_SECRET,
+    cookie: {},
+    resave: false,
+    saveUninitialized: true,
+    store: new SequelizeStore({
+        db: sequelize,
+        checkExpirationInterval: 1000 * 60 * 10,
+        expiration: 1000 * 60 * 30 
+    })
+};
+
+// port to pathway 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-const sequelize = require("./config/config");
-const SequelizeStore = require("connect-session-sequelize")(session.Store);
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
 
-const sess = {
-  secret: " Super secret secret",
-  cookie: {
-    maxAge: 30000,
-    httpOnly: true,
-    secure: false,
-    sameSite: "strict",
-  },
-  resave: false,
-  saveUninitiated: true,
-  store: new SequelizeStore({
-    db: sequelize,
-  }),
-};
-
-// app.use(session(sess));
-
-const hbs = exphbs.create({ helpers });
-app.engine("handlebars", hbs.engine);
-app.set("view engine", "handlebars");
-
+app.use(session(sess));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.urlencoded({
+    extended: true
+}));
+app.use(routes);
 
-app.use(require("./controllers/"));
+sequelize.sync();
 
-// turns on connection to server and db 
+// connection 
 app.listen(PORT, () => {
-  console.log("Copy loud and clear on ${PORT}!");
-  sequelize.sync({ force: false });
+    console.log(`App listening on port ${PORT}!`);
 });
-
