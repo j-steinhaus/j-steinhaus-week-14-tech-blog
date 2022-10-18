@@ -1,2 +1,10 @@
-ÞA¸3 ^ä]‰!eˆO#\y×XG…Á©ò%²Ü„ 
-úø¥©O/™*R,[)	ø ždþ›âHQß€½cÈV`Sñ¬ædŠÔ5€Wþ‹·¢|¹l-°°>­-6=Çm¼~	>zw|g,§M(n5’|¨ZÔ¸ÍÊR¬ß÷8TÁQ
+function formatDate(date) {
+    return `${new Date(date).getMonth() + 1}/${new Date(date).getDate()}/${new Date(
+        date
+      ).getFullYear()}`;
+}
+
+
+module.exports = {
+    formatDate
+}
